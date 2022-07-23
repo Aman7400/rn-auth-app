@@ -76,6 +76,7 @@ const Login = ({ navigation }) => {
                             label="Password"
                             onBlur={onBlur}
                             onChangeText={onChange}
+                            autoCapitalize="none"
                             value={value}
                             mode="outlined"
                             error={errors.password}

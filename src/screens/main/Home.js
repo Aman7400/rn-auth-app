@@ -4,7 +4,7 @@ import { AuthContext } from '../../contexts/AuthContext'
 import { Button as PaperButton } from 'react-native-paper';
 
 const Home = ({navigation}) => {
-    const {logout} = React.useContext(AuthContext)
+    const {logout,userProfile} = React.useContext(AuthContext)
   return (
     <SafeAreaView>
         <View style={{
@@ -20,7 +20,7 @@ const Home = ({navigation}) => {
                     color: 'blue',
                     fontWeight: 'bold',
                     fontSize: 18,
-                }}>,Aman</Text> 
+                }}>,{userProfile.fullName}</Text> 
             </View>
             <Button title=""  />
             <PaperButton icon="logout" mode="contained" onPress={() => logout()}>
