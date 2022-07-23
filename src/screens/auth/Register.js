@@ -3,9 +3,13 @@ import React from 'react'
 import { HelperText, TextInput as PaperTextInput } from 'react-native-paper';
 import { useForm, Controller } from "react-hook-form";
 import regex from '../../constants/regex';
+import axios from 'axios';
+import { AuthContext } from '../../contexts/AuthContext';
 
 
 const Register = ({ navigation }) => {
+
+    const {setIsLoading} = React.useContext(AuthContext)
 
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
@@ -16,17 +20,30 @@ const Register = ({ navigation }) => {
     });
 
 
-    const onRegister = (data) => {
+    const onRegister = async (data) => {
         try {
             console.log({ data });
-            navigation.navigate('Login');
+
+            setIsLoading(true)
+
+            const res = await axios.post("http://localhost:8000/api/user/register", {...data})
+
+            if (res.data.id) {
+
+                console.log("User Creation successful");
+
+                navigation.navigate('Login');
+
+                
+            }
+
 
         } catch (error) {
 
             console.log("Register Error: " + error);
 
         } finally {
-
+            setIsLoading(false)
         }
     }
 
