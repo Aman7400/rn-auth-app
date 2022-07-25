@@ -25,7 +25,7 @@ const Home = ({ navigation }) => {
                         }}>, {userProfile.fullName}</Text>
                     </View>
 
-                    <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
                         <ProfileAvatar.Image size={48} source={{uri: userProfile.profilePic || 'https://john-mohamed.com/wp-content/uploads/2018/05/Profile_avatar_placeholder_large.png'}} />
                     </TouchableOpacity>
                 </View>

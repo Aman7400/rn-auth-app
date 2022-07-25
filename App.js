@@ -3,11 +3,11 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Home from './src/screens/main/Home'
-import Settings from './src/screens/main/Settings'
 import Login from './src/screens/auth/Login'
 import Register from './src/screens/auth/Register'
 import { AuthContext, AuthContextProvider } from './src/contexts/AuthContext'
 import { Provider as PaperProvider } from 'react-native-paper';
+import Profile from './src/screens/main/Profile'
 
 
 const Stack = createNativeStackNavigator()
@@ -50,7 +50,9 @@ function MainNavigator() {
             ?
             <>
               <Stack.Screen name="Home"  component={Home} />
-              <Stack.Screen name="Settings" component={Settings} />
+              <Stack.Screen options={{
+                headerShown:true
+              }} name="Profile" component={Profile} />
             </>
             :
             <>
