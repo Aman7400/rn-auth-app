@@ -1,17 +1,18 @@
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Image, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { HelperText, TextInput as PaperTextInput } from 'react-native-paper';
 import { useForm, Controller } from "react-hook-form";
 import regex from '../../constants/regex';
 import axios from 'axios';
-import { AuthContext } from '../../contexts/AuthContext';
+
+
+
 
 
 const Register = ({ navigation }) => {
 
-    const {setIsLoading} = React.useContext(AuthContext)
 
-    const { control, handleSubmit, formState: { errors } } = useForm({
+    const { control, handleSubmit, formState: { errors,isSubmitting },reset } = useForm({
         defaultValues: {
             fullName: '',
             email: '',
@@ -20,37 +21,49 @@ const Register = ({ navigation }) => {
     });
 
 
-    const onRegister = async (data) => {
+
+    const onRegister = async (data) => 
+    {
         try {
-            console.log({ data });
 
-            setIsLoading(true)
-
-            const res = await axios.post("http://localhost:8000/api/user/register", {...data})
+            const res = await axios.post("http://localhost:8000/api/user/register", { ...data })
 
             if (res.data.id) {
 
-                console.log("User Creation successful");
+                alert("Account Created Successfully");
+                reset({
+                    fullName: '',
+                    email: '',
+                    password: '',
+                });
+                setTimeout(() => {
+                    navigation.navigate("Login");
+                }, 3000);
 
-                navigation.navigate('Login');
-
-                
             }
 
 
         } catch (error) {
 
-            console.log("Register Error: " + error);
+            alert("Register Error: " + error.response.data.message)
 
         } finally {
-            setIsLoading(false)
         }
+    }
+
+
+
+    if (isSubmitting){
+        return <View style={{ flex: 1 }}>
+      <ActivityIndicator style={{ flex: 1 }} />
+    </View>
     }
 
 
 
     return (
         <SafeAreaView>
+
             <ScrollView alwaysBounceVertical={false}>
                 <View style={{ paddingHorizontal: 30 }}>
                     {/* Illustration */}
