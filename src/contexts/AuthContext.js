@@ -1,7 +1,6 @@
 import * as React from "react"
 const AuthContext = React.createContext();
 import * as SecureStore from "expo-secure-store"
-import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 
 const AuthContextProvider = ({children}) => {
@@ -12,7 +11,6 @@ const [userProfile,setUserProfile]  = React.useState();
 
 
  async function login({email,password}) {
-    console.log({email,password});
     try {
         setIsLoading(true);
         const res = await axios.post("http://localhost:8000/api/user/login",{
@@ -26,7 +24,8 @@ const [userProfile,setUserProfile]  = React.useState();
 
     } catch (error) {
 
-        console.log("Login error: " + error);
+        alert("Login Error :" + error.response.data.message)
+
         
     } finally {
         setIsLoading(false);
@@ -42,14 +41,12 @@ const [userProfile,setUserProfile]  = React.useState();
   React.useEffect(() => {
 
     const bootStrapAsync = async () => {
-        console.log("Starting App");
         try {
             setIsLoading(true);
 
             let token = await SecureStore.getItemAsync("token")
             
             if (token){
-                console.log({token});
                 const res = await axios.get("http://localhost:8000/api/user/profile",{
                     headers : {
                         Authorization: "Bearer " + token
@@ -57,8 +54,6 @@ const [userProfile,setUserProfile]  = React.useState();
                 })
 
                 if (res.data.message === 'Profile') {
-
-                    console.log(res.data.user);
 
                     setUserProfile(res.data.user)
                     setIsLoggedIn(true);
@@ -68,7 +63,7 @@ const [userProfile,setUserProfile]  = React.useState();
 
             }
         } catch (error) {
-            console.log("Starting App Error: " + error);
+            alert("Starting App Error: " + error.response.data.message);
         } finally {
             setIsLoading(false)
         }
