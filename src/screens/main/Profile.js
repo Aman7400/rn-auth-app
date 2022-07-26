@@ -1,13 +1,77 @@
-import { Image, SafeAreaView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Image, SafeAreaView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { AuthContext } from '../../contexts/AuthContext'
 import { Button } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/Ionicons'
+import * as ImagePicker from "expo-image-picker";
+import axios from 'axios'
+import * as SecureStore from "expo-secure-store"
 
 
 const Profile = () => {
 
+    const [isLoading, setIsLoading] = React.useState(false)
     const { userProfile } = React.useContext(AuthContext)
+    const [img, setImg] = React.useState(userProfile.profilePic ? `http://localhost:8000/api${userProfile.profilePic}` : null)
+
+    const uploadImage = async () => {
+
+        try {
+
+            setIsLoading(true);
+
+
+            let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: "Images",
+                aspect: [4, 3],
+                quality: 1,
+            });
+
+
+            setImg(result.uri);
+
+
+
+
+
+
+            const formData = new FormData();
+            formData.append("profilePic", {
+                uri: result.uri,
+                type: 'image/jpg',
+                name: 'image.jpg',
+            });
+
+
+
+            let token = await SecureStore.getItemAsync("token")
+
+            const res = await axios.post("http://localhost:8000/api/user/profile", formData, {
+                headers: {
+                    Authorization: "Bearer " + token
+                },
+                enctype: "multipart/form-data",
+            })
+
+
+        } catch (error) {
+
+            alert('Upload Error' + error)
+
+        } finally {
+            setIsLoading(false);
+        }
+
+    }
+
+
+    if (isLoading) {
+        return <View style={{ flex: 1 }}>
+            <ActivityIndicator style={{ flex: 1 }} />
+        </View>
+    }
+
+
 
     return (
         <SafeAreaView style={{
@@ -17,14 +81,33 @@ const Profile = () => {
                 borderRadius: 16,
                 justifyContent: 'center',
                 alignItems: 'center',
-                padding: 16
+                padding: 16,
+                position: 'relative',
             }}>
+
+                <TouchableOpacity
+                    onPress={uploadImage}
+                    style={{
+                        position: "relative",
+                        top: 120,
+                        left: 40,
+                        zIndex: 3,
+                        height: 36,
+                        width: 36,
+                        backgroundColor: "blue",
+                        justifyContent: 'center',
+                        alignItems: "center",
+                        borderRadius: 100
+
+                    }}>
+                    <Icon name="camera" size={18} color="white" />
+                </TouchableOpacity>
 
                 <Image resizeMode="cover" style={{
                     width: 120, height: 120,
                     borderRadius: 100,
                     marginBottom: 16
-                }} source={{ uri: 'https://i0.wp.com/themarvelreport.com/wp-content/uploads/2019/05/Tony-Stark-Iron-Man.jpg?ssl=1' }} />
+                }} source={{ uri: img || 'https://i0.wp.com/themarvelreport.com/wp-content/uploads/2019/05/Tony-Stark-Iron-Man.jpg?ssl=1' }} />
                 <Text style={{
                     fontSize: 24,
                     fontWeight: "bold"

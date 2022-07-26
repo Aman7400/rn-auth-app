@@ -10,6 +10,7 @@ const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 const [userProfile,setUserProfile]  = React.useState();
 
 
+
  async function login({email,password}) {
     try {
         setIsLoading(true);
@@ -38,36 +39,36 @@ const [userProfile,setUserProfile]  = React.useState();
   }
 
 
-  React.useEffect(() => {
+  const bootStrapAsync = async () => {
+    try {
+        setIsLoading(true);
 
-    const bootStrapAsync = async () => {
-        try {
-            setIsLoading(true);
-
-            let token = await SecureStore.getItemAsync("token")
-            
-            if (token){
-                const res = await axios.get("http://localhost:8000/api/user/profile",{
-                    headers : {
-                        Authorization: "Bearer " + token
-                    }
-                })
-
-                if (res.data.message === 'Profile') {
-
-                    setUserProfile(res.data.user)
-                    setIsLoggedIn(true);
-
-                    
+        let token = await SecureStore.getItemAsync("token")
+        
+        if (token){
+            const res = await axios.get("http://localhost:8000/api/user/profile",{
+                headers : {
+                    Authorization: "Bearer " + token
                 }
+            })
 
+            if (res.data.message === 'Profile') {
+
+                setUserProfile(res.data.user)
+                setIsLoggedIn(true);
+
+                
             }
-        } catch (error) {
-            alert("Starting App Error: " + error.response.data.message);
-        } finally {
-            setIsLoading(false)
+
         }
+    } catch (error) {
+        alert("Starting App Error: " + error.response.data.message);
+    } finally {
+        setIsLoading(false)
     }
+}
+
+  React.useEffect(() => {
 
     bootStrapAsync();
 
