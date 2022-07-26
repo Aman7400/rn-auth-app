@@ -3,11 +3,12 @@ import React, { useEffect } from 'react'
 import { AuthContext } from '../../contexts/AuthContext'
 import { Button as PaperButton, Avatar as ProfileAvatar } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 const Home = ({ navigation }) => {
 
-    const { logout, userProfile } = React.useContext(AuthContext)
+    const { logout, userProfile,isDarkModeOn } = React.useContext(AuthContext)
 
 
 
@@ -18,7 +19,7 @@ const Home = ({ navigation }) => {
                 padding: 18
             }}>
 
-
+ <Icon name={isDarkModeOn ? "moon" : "sunny"} size={48}  />
 
                 {/* Top */}
                 <View style={{ flexDirection: 'row', justifyContent: "space-between",alignItems:"center",marginBottom:16 }} >

@@ -8,6 +8,7 @@ const AuthContextProvider = ({children}) => {
 const [isLoading,setIsLoading] = React.useState(false);
 const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 const [userProfile,setUserProfile]  = React.useState();
+const [isDarkModeOn,setIsDarkModeOn] = React.useState(false);
 
 
 
@@ -75,7 +76,7 @@ const [userProfile,setUserProfile]  = React.useState();
   },[isLoggedIn])
 
     return (
-        <AuthContext.Provider value={{isLoggedIn,login,isLoading,logout,setIsLoading,userProfile}}>
+        <AuthContext.Provider value={{isLoggedIn,login,isLoading,logout,setIsLoading,userProfile,setUserProfile,isDarkModeOn,setIsDarkModeOn}}>
             {children}
         </AuthContext.Provider>
     )
