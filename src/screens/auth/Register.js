@@ -1,18 +1,18 @@
-import { ActivityIndicator, Image, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { HelperText, TextInput as PaperTextInput } from 'react-native-paper';
 import { useForm, Controller } from "react-hook-form";
 import regex from '../../constants/regex';
 import axios from 'axios';
-
-
-
+import { BACKEND_URL } from "@env"
 
 
 const Register = ({ navigation }) => {
 
 
-    const { control, handleSubmit, formState: { errors,isSubmitting },reset } = useForm({
+    console.log(BACKEND_URL);
+
+    const { control, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm({
         defaultValues: {
             fullName: '',
             email: '',
@@ -22,11 +22,10 @@ const Register = ({ navigation }) => {
 
 
 
-    const onRegister = async (data) => 
-    {
+    const onRegister = async (data) => {
         try {
 
-            const res = await axios.post("http://localhost:8000/api/user/register", { ...data })
+            const res = await axios.post(`${BACKEND_URL}/user/register`, { ...data })
 
             if (res.data.id) {
 
@@ -53,10 +52,10 @@ const Register = ({ navigation }) => {
 
 
 
-    if (isSubmitting){
+    if (isSubmitting) {
         return <View style={{ flex: 1 }}>
-      <ActivityIndicator style={{ flex: 1 }} />
-    </View>
+            <ActivityIndicator style={{ flex: 1 }} />
+        </View>
     }
 
 
@@ -71,7 +70,7 @@ const Register = ({ navigation }) => {
                         width: '100%',
                         height: 300,
                     }} source={require("../../../assets/images/register.png")} />
-                    {/* Login Form */}
+                    {/* Regsiter Form */}
                     <Text style={{
                         fontSize: 24,
                         fontWeight: 'bold',
@@ -239,8 +238,6 @@ const Register = ({ navigation }) => {
 }
 
 export default Register
-
-const styles = StyleSheet.create({})
 
 
 function SocialMediaLogins() {

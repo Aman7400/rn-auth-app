@@ -1,9 +1,10 @@
-import { Button, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Image, SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { AuthContext } from '../../contexts/AuthContext';
-import { HelperText, Snackbar, TextInput as PaperTextInput } from 'react-native-paper';
+import { HelperText, TextInput as PaperTextInput } from 'react-native-paper';
 import { useForm, Controller } from "react-hook-form";
 import regex from '../../constants/regex';
+
 
 
 const Login = ({ navigation }) => {
@@ -165,7 +166,6 @@ const Login = ({ navigation }) => {
 
 export default Login
 
-const styles = StyleSheet.create({})
 
 
 function SocialMediaLogins() {

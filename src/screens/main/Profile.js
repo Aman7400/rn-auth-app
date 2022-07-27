@@ -1,4 +1,4 @@
-import { ActivityIndicator, Image, SafeAreaView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Image, SafeAreaView, Switch, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { AuthContext } from '../../contexts/AuthContext'
 import { Button } from 'react-native-paper'
@@ -6,13 +6,14 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import * as ImagePicker from "expo-image-picker";
 import axios from 'axios'
 import * as SecureStore from "expo-secure-store"
+import { BACKEND_URL } from "@env"
 
 
 const Profile = () => {
 
     const [isLoading, setIsLoading] = React.useState(false)
     const { userProfile, isDarkModeOn, setIsDarkModeOn, setUserProfile } = React.useContext(AuthContext)
-    const [img, setImg] = React.useState(userProfile.profilePic ? `http://localhost:8000/api${userProfile.profilePic}` : null)
+    const [img, setImg] = React.useState(userProfile.profilePic ? `${BACKEND_URL}${userProfile.profilePic}` : null)
 
     const uploadImage = async () => {
 
@@ -31,10 +32,6 @@ const Profile = () => {
             setImg(result.uri);
 
 
-
-
-
-
             const formData = new FormData();
             formData.append("profilePic", {
                 uri: result.uri,
@@ -46,7 +43,7 @@ const Profile = () => {
 
             let token = await SecureStore.getItemAsync("token")
 
-            const res = await axios.post("http://localhost:8000/api/user/profile", formData, {
+            const res = await axios.post(`${BACKEND_URL}/user/profile`, formData, {
                 headers: {
                     Authorization: "Bearer " + token
                 },
@@ -64,14 +61,10 @@ const Profile = () => {
 
 
 
-
-
         } catch (error) {
 
             setIsLoading(false);
             alert('Upload Error' + error)
-
-        } finally {
 
         }
 
@@ -245,14 +238,10 @@ const Profile = () => {
                         <Switch value={false} style={{
                             marginLeft: 'auto'
                         }} />
-                        {/* <Switch value={false} onValueChange={() => {}} />; */}
                     </TouchableOpacity>
 
 
                 </View>
-
-
-
 
 
 
@@ -262,5 +251,3 @@ const Profile = () => {
 }
 
 export default Profile
-
-const styles = StyleSheet.create({})
