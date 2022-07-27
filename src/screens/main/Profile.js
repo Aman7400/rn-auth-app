@@ -54,17 +54,25 @@ const Profile = () => {
             })
 
 
-            setUserProfile(res.data.updatedUser)
+            if (res.data.message === 'Profile Updated') {
+
+                setIsLoading(false);
+                setUserProfile(res.data.updatedUser)
+                alert("Profile Picture Updated Successfully")
+                
+            }
+
 
             
 
 
         } catch (error) {
 
+            setIsLoading(false);
             alert('Upload Error' + error)
 
         } finally {
-            setIsLoading(false);
+            
         }
 
     }
