@@ -35,8 +35,16 @@ const [isDarkModeOn,setIsDarkModeOn] = React.useState(false);
    
   }
  async function logout(){
-   await SecureStore.deleteItemAsync("token")
+    try {
+    setIsLoading(true);
+    await SecureStore.deleteItemAsync("token")
     setIsLoggedIn(false);
+    } catch (error) {
+        alert("Logout Error",error)
+    } finally {
+    setIsLoading(false)
+    }
+   
   }
 
 
