@@ -10,8 +10,6 @@ import { BACKEND_URL } from "@env"
 const Register = ({ navigation }) => {
 
 
-    console.log(BACKEND_URL);
-
     const { control, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm({
         defaultValues: {
             fullName: '',

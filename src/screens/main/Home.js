@@ -11,8 +11,6 @@ const Home = ({ navigation }) => {
 
     const { logout, userProfile, isDarkModeOn } = React.useContext(AuthContext)
 
-    console.log(`${BACKEND_URL}${userProfile.profilePic}`);
-
 
 
     return (
