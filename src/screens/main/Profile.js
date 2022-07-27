@@ -11,7 +11,7 @@ import * as SecureStore from "expo-secure-store"
 const Profile = () => {
 
     const [isLoading, setIsLoading] = React.useState(false)
-    const { userProfile,isDarkModeOn,setIsDarkModeOn,setUserProfile } = React.useContext(AuthContext)
+    const { userProfile, isDarkModeOn, setIsDarkModeOn, setUserProfile } = React.useContext(AuthContext)
     const [img, setImg] = React.useState(userProfile.profilePic ? `http://localhost:8000/api${userProfile.profilePic}` : null)
 
     const uploadImage = async () => {
@@ -59,11 +59,11 @@ const Profile = () => {
                 setIsLoading(false);
                 setUserProfile(res.data.updatedUser)
                 alert("Profile Picture Updated Successfully")
-                
+
             }
 
 
-            
+
 
 
         } catch (error) {
@@ -72,7 +72,7 @@ const Profile = () => {
             alert('Upload Error' + error)
 
         } finally {
-            
+
         }
 
     }
@@ -212,7 +212,11 @@ const Profile = () => {
                         }}>
                             Dark Mode
                         </Text>
-                        <Switch onValueChange={() => setIsDarkModeOn(!isDarkModeOn)} value={isDarkModeOn} style={{
+                        <Switch onValueChange={async () => {
+                            setIsDarkModeOn(!isDarkModeOn)
+                            await SecureStore.setItemAsync("mode", !isDarkModeOn ? "dark" : "normal");
+
+                        }} value={isDarkModeOn} style={{
                             marginLeft: 'auto'
                         }} />
                     </TouchableOpacity>

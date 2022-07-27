@@ -45,6 +45,8 @@ const [isDarkModeOn,setIsDarkModeOn] = React.useState(false);
         setIsLoading(true);
 
         let token = await SecureStore.getItemAsync("token")
+        let deviceMode = await SecureStore.getItemAsync("mode");
+
         
         if (token){
             const res = await axios.get("http://localhost:8000/api/user/profile",{
@@ -57,6 +59,7 @@ const [isDarkModeOn,setIsDarkModeOn] = React.useState(false);
 
                 setUserProfile(res.data.user)
                 setIsLoggedIn(true);
+                setIsDarkModeOn(deviceMode === 'dark');
 
                 
             }
